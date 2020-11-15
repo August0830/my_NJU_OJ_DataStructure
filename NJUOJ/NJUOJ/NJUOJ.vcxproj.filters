@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="柱状图中最大矩形.cpp">
+    <ClCompile Include="压缩小蓝鲸第二弹.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

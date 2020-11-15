@@ -39,11 +39,11 @@ int main()
 		}
 		if (i == n)
 		{
-			if (ptr == s + 1||ptr==-1)
+			if (ptr == s + 1||ptr==-1)//ptr是次高的下标 没有次高即右侧均比左侧高或者次高在最高旁边
 				s = s + 1;
 			else
 			{
-				for (int j = s + 1; j < ptr; ++j)
+				for (int j = s + 1; j < ptr; ++j)//可以直接减
 					sum += secondmax - arr[j];
 				s = ptr;
 			}
