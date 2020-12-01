@@ -3,16 +3,20 @@ using namespace std;
 struct Node
 {
 	int val;
-	Node* left, *right, *par;
+	int nodes;//subtree number
+	Node* left;
+	Node* right;
+	Node* par;
 };
 template <class E>
 class Queue
-{protected:
+{
+protected:
 	int rear, front;
 	E* elements;
 	int maxSize;
 public:
-	Queue(int sz) :front(0),rear(0), maxSize(sz)
+	Queue(int sz) :front(0), rear(0), maxSize(sz)
 	{
 		elements = new E[maxSize];
 	}
@@ -24,33 +28,36 @@ public:
 	bool De(E& x);
 };
 Node* BuildTree();
-void midorder(Node* tree);
-Node* ppos, * qpos;
-int p, q;
-int main1()
+void MidOrder(Node* tree);
+void CountNodes(Node*& tree);
+int main()
 {
-	cin >> p >> q;
 	Node* tree = BuildTree();
-	//midorder(tree);//
-	int res = tree->val;
-	Node* ip = ppos, * iq = qpos;
-	bool find = false;
-	while (ip!= NULL && !find)
-	{
-		while (iq!= NULL && !find)
-		{
-			if (ip->par == iq->par)
-			{
-				res = ip->par->val;
-				find = true;
-			}
-			iq = iq->par;
-		}
-		ip = ip->par;
-		iq = qpos;
-	}
-	cout << res;
+	CountNodes(tree);
+	//MidOrder(tree);
 	return 0;
+}
+
+void CountNodes(Node*& tree)
+{
+	if (!tree->left && !tree->right)
+		tree->nodes = 0;
+	else if (!tree->left && tree->right)
+	{
+		CountNodes(tree->right);
+		tree->nodes = 1 + tree->right->nodes;
+	}
+	else if (tree->left && !tree->right)
+	{
+		CountNodes(tree->left);
+		tree->nodes = 1 + tree->left->nodes;
+	}
+	else
+	{
+		CountNodes(tree->left);
+		CountNodes(tree->right);
+		tree->nodes = tree->right->nodes + tree->left->nodes + 2;
+	}
 }
 Node* BuildTree()
 {
@@ -58,17 +65,17 @@ Node* BuildTree()
 	cin >> n;
 	Queue<Node*> queue(1024);
 	Node* root;
-	int tmp = 0,cnt=0;
+	int tmp = 0, cnt = 0;
 	cin >> tmp; cnt++;
 	if (tmp == -1)
 		return NULL;
 	root = new Node;
 	root->val = tmp;
-	root->par = NULL;
+	//root->par = NULL;
 	queue.En(root);
-	while(cnt<n)//while (!q.isEmpty())
+	while (cnt < n)//while (!q.isEmpty())
 	{
-		Node* node= new Node;
+		Node* node = new Node;
 		queue.De(node);
 		int ntmp;
 		cin >> ntmp; cnt++;
@@ -80,13 +87,11 @@ Node* BuildTree()
 			node->left->right = NULL;
 			node->left->par = node;
 			queue.En(node->left);
-			if (ntmp == p)
-				ppos = node->left;
-			if (ntmp == q)
-				qpos = node->left;
 		}
 		else
 			node->left = NULL;
+		if (cnt >= n)
+			break;
 		cin >> ntmp; cnt++;
 		if (ntmp != -1)
 		{
@@ -96,10 +101,6 @@ Node* BuildTree()
 			node->right->right = NULL;
 			node->right->par = node;
 			queue.En(node->right);
-			if (ntmp == p)
-				ppos = node->right;
-			if (ntmp == q)
-				qpos = node->right;
 		}
 		else
 			node->right = NULL;
@@ -124,18 +125,12 @@ bool Queue<E>::De(E& x)
 	front = (front + 1) % maxSize;
 	return true;
 }
-void midorder(Node*tree)
+void MidOrder(Node* tree)
 {
-	if (tree!=NULL)
+	if (tree != NULL)
 	{
-		midorder(tree->left);
-		cout << tree->val << " ";
-		midorder(tree->right);
+		MidOrder(tree->left);
+		cout << tree->val << " "<<tree->nodes<<" ";
+		MidOrder(tree->right);
 	}
 }
-/*4
-41
-17
-41 12 -1 44 22 36 20 24 4 11 38 27 35 52 49 43 54
-
-*/

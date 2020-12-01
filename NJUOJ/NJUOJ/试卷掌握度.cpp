@@ -51,7 +51,7 @@ int main()
 	}
 	printf("%0.5lf", max);
 	return 0;
-}
+}//避免重复计算 可以用递归 返回总数 用全局变量记录出现的最大掌握度
 
 double Count(Node* tree)
 {

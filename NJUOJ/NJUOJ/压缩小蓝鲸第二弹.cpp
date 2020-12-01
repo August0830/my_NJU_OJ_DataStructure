@@ -87,7 +87,7 @@ void Depth(Node* tree,int cnt)
 		if (tree->left == NULL && tree->right == NULL)//leaf
 		{
 			int index = (int)(tree->ch - 'A');
-			sum += alph[index] * cnt;
+			sum += alph[index] * =;
 		}
 		else
 		{
@@ -129,7 +129,7 @@ void MinHeap::shiftDown(int start, int end)
 	}
 	heap[i] = tmp;
 }
-void MinHeap:: shiftUp(int end)//实际的curSize
+void MinHeap:: shiftUp(int end)//实际的curSize==
 {
 	int j = end, i=(j-1)/2;
 	Node*temp = heap[j];
